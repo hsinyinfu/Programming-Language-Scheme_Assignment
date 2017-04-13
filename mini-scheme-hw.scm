@@ -47,6 +47,9 @@
 (define globals
   (list
     (list `display display)
+    (list `< <)
+    (list `- -)
+    (list `/ /)
     (list '+ +)
     (list '* *)
     (list '= =)
@@ -150,7 +153,8 @@
 			           expr)
 			     env))
 	  ((cond? expr)          ;COND
-	     (error "cond not ready yet:" expr)  ) 		     
+           (my-cond-eval (cadr expr) env)
+           ) 		     
 	     ; (display "*Error: cond not ready yet:") #f )		     
           ((let? expr)	;LET
 	      (let* ( (clauses (cadr expr))
@@ -181,6 +185,10 @@
 						(cadddr f)) ;env-in-closure
 		))
 	  (else (error "invalid function in MY-APPLY" f)))))
-	 
+
+(define my-cond-eval
+  (lambda (expr env)
+    (if (my-eval (car (car expr)) env) (my-eval (cadr (car expr)) env) (my-eval (list `cond (cdr expr)) env)) 
+   ))
 ;; Starting the mini-scheme interpreter
 (scheme)
