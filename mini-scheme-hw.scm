@@ -56,7 +56,7 @@
     (list '> >)
     (list 'fact (make-func '(n) '(if (= n 0) 1 (* n (fact (+ n -1)))) '()) )
     (list 'car car)
-    (list 'cdr)
+    (list 'cdr cdr)
     (list 'null? null?)
     (list 'cons cons)
     (list 'eq? eq?)
@@ -165,7 +165,7 @@
 	              (new-env (append (zip list vars vals) env)) )     
 		  (my-eval body new-env)))
 	  ((let*? expr)  ; LET*
-	    (error "let* not ready yet:" expr)  ) 
+	    (my-let*-eval expr env)  ) 
 	  ((letrec? expr)  ; LETREC
 	    (error "letrec not ready yet:" expr)  )    
           (else   ;regular funcall
@@ -190,5 +190,11 @@
   (lambda (expr env)
     (if (my-eval (car (car expr)) env) (my-eval (cadr (car expr)) env) (my-eval (list `cond (cdr expr)) env)) 
    ))
+
+(define (my-let*-eval expr env)
+  (define (let-binding bindingExpr)
+    (if (null? bindingExpr) `() (cons (list (car (car bindingExpr)) (my-eval (cadar bindingExpr) env)) (let-binding (cdr bindingExpr)))))
+  (my-eval (caddr expr) (append (let-binding (cadr expr)) env))
+  )
 ;; Starting the mini-scheme interpreter
 (scheme)
