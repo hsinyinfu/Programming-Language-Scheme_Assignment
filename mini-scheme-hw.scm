@@ -188,7 +188,8 @@
 
 (define my-cond-eval
   (lambda (expr env)
-    (if (my-eval (car (car expr)) env) (my-eval (cadr (car expr)) env) (my-eval (list `cond (cdr expr)) env)) 
+    (if (eq? `else (car (car expr))) (my-eval(cadar expr) env)
+        (if (my-eval (car (car expr)) env) (my-eval (cadr (car expr)) env) (my-eval (list `cond (cdr expr)) env)) )
    ))
 
 (define (my-let*-eval expr env)
