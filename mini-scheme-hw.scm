@@ -29,20 +29,27 @@
   (cond ((not (pair? expr)) (my-eval expr globals))
 	((eq? (car expr) 'define)         ;LOOK CAREFULLY HERE.
          ;(set! globals (cons (list (cadr expr) (my-eval (caddr expr) globals)) globals))
-         (my-define expr)
+         (my-define-judgeFormat expr)
          )     
 	(else (my-eval expr globals))
 	))
-		  
 
-(define (my-define expr)
+(define (my-define-judgeFormat expr)
+  (if (not (pair? (cadr expr))) (my-defineNotPair expr);format (define f (lambda (x) (+ x x)) ) and (define x 2)
+      (my-definePair expr) ;format (define (f x) (+ x x) )
+  ))		  
+(define (my-defineNotPair expr)
   (let ( (evaled (my-eval(caddr expr) globals)) )
    (returnEvaled (set! globals (cons (list (cadr expr) evaled) globals)) evaled)
   ))
-
+(define (my-definePair expr)
+  (let ( (evaled (my-eval (list `lambda (cdadr expr) (caddr expr)) globals)) )
+  (returnEvaled (set! globals (cons (list (caadr expr) evaled) globals)) evaled)
+   ))
 (define (returnEvaled env evaledExpr)
   (if #t evaledExpr `null
    ))
+
 ;;; Representation of non-primitive function: (%func args body env)
 (define make-func
   (lambda (var-list body env)
