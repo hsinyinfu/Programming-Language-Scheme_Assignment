@@ -51,9 +51,12 @@
 (define Rectangle-Dictionary
   (list
    (list `move (lambda (this args)
-                 (let ((point1 (this `get-p1)) (point2 (this `get-p2))) (point1 `move args)(point2 `move args))
+                 ;(let ((point1 (this `get-p1)) (point2 (this `get-p2)))
+                  ; (point1 `move args) (point2 `move args) (this `draw))
+                 ((this `get-p1) `move (car args) (cadr args))
+                 ((this `get-p2) `move (car args) (cadr args))
                  (this `draw)
-                 this
+                 ;this
                  ))
    (list `toString (lambda (this args)
                  (string-append
@@ -97,7 +100,7 @@
           (put! data 0 (+ (get data 0) (car args)))
           (put! data 1 (+ (get data 1) (cadr args)))
         )
-        (this 'draw)
+        ;(this 'draw)
         this
       )
     )
