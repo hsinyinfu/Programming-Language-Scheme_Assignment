@@ -50,14 +50,13 @@
 
 (define Rectangle-Dictionary
   (list
-   ;(list `toString (lambda (this args) ()))
    (list `move (lambda (this args)
                  (let ((point1 (this `get-p1)) (point2 (this `get-p2))) (point1 `move args)(point2 `move args))
                  (this `draw)
                  this
                  ))
    (list `toString (lambda (this args)
-                 (string append
+                 (string-append
                          (this `super Point `toString args)
                          " with "
                          ((this `get-p1) `super Rectangle `toString args)
@@ -98,7 +97,7 @@
           (put! data 0 (+ (get data 0) (car args)))
           (put! data 1 (+ (get data 1) (cadr args)))
         )
-        ;(this 'draw)
+        (this 'draw)
         this
       )
     )

@@ -32,9 +32,10 @@
 
 (move-all lpts)
 
-;(define rec (Rectangle `new (Point `new 1 3) (Point `new 4 1)))
+(define rec (Rectangle `new (Point `new 1 3) (Point `new 4 1)))
+(rec `draw)
 ;((rec `get-p1) move 2 3)
 ;((rec `get-p1) `data)
 ;((rec `get-p2) `data)
 ;(rec `toString)
-;(rec `area)
+(rec `area)
